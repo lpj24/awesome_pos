@@ -16,6 +16,14 @@
                                 </template>
                             </el-table-column>
                         </el-table>
+
+                        <div class="order-btn">
+
+                            <el-button type="warning">挂单</el-button>
+                            <el-button type="danger">删除</el-button>
+                            <el-button type="success"> 结账</el-button>
+
+                        </div>
                     </el-tab-pane>
 
                     <el-tab-pane label="挂单">
@@ -28,14 +36,6 @@
 
                 </el-tabs>
 
-
-                <div class="order-btn">
-
-                    <el-button type="warning">挂单</el-button>
-                    <el-button type="danger">删除</el-button>
-                    <el-button type="success"> 结账</el-button>
-
-                </div>
             </el-col>
 
             <!--主界面右侧布局-->
@@ -45,7 +45,7 @@
                     <div class="often-goods-list">
                         <ul>
                             <li v-for="goods in oftenGoods">
-                                <span>{{goods.goodsname}}</span>
+                                <span>{{goods.goodsName}}</span>
                                 <span class="o-price">￥{{goods.price}}</span>
                             </li>
 
@@ -56,16 +56,18 @@
                 <!--商品分类-->
                 <div class="goods-type">
                     <el-tabs>
-                        <el-tab-pane label="汉堡">
-                            <div class="often-goods-list">
-                                <ul>
-                                    <li v-for="goods in oftenGoods">
-                                        <span>{{goods.goodsname}}</span>
-                                        <span class="o-price">￥{{goods.price}}</span>
+                        <el-tab-pane label="肉食">
+                                <ul class="cookList">
+                                    <li v-for="goods in meatGoods">
+                                        <span class="foodImg">
+                                            <img :src="goods.goodsImg" width="100%">
+                                        </span>
+
+                                        <span class="foodName">{{goods.goodsName}}</span>
+                                        <span class="foodPrice">￥{{goods.price}}元</span>
                                     </li>
 
                                 </ul>
-                            </div>
                         </el-tab-pane>
 
                         <el-tab-pane label="小食">
@@ -89,8 +91,19 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         name: "Pos",
+        created() {
+            axios.get('http://jspang.com/DemoApi/oftenGoods.php').then(
+                response=>{
+                    console.log(response.data);
+                    this.oftenGoods = response.data;
+                }
+            ).catch(error=>{
+                alert('请求错误');
+            })
+        },
         data() {
             return {
                 tableData: [
@@ -101,21 +114,19 @@
                 ],
 
                 oftenGoods: [
-                        {goodsname: '鱼香寿司', price: 16},
-                        {goodsname: '红烧肉',  price: 45},
-                        {goodsname: '水煮鱼',  price: 78},
-                        {goodsname: '烤鱼', price: 108},
-                        {goodsname: '海底捞', price: 108},
-                        {goodsname: '宫爆鸡丁', price: 108},
-                        {goodsname: '糖醋里脊', price: 108},
-                        {goodsname: '串串', price: 108},
+
+                ],
+
+                meatGoods: [
+                    {goodsname: '鱼香寿司', price: 16, goodsImg: 'http://7xjyw1.com1.z0.glb.clouddn.com/pos001.jpg'},
+                    {goodsname: '红烧肉',  price: 45, goodsImg: 'http://7xjyw1.com1.z0.glb.clouddn.com/pos001.jpg'},
+                    {goodsname: '水煮鱼',  price: 78, goodsImg: 'http://7xjyw1.com1.z0.glb.clouddn.com/pos001.jpg'},
+                    {goodsname: '烤鱼', price: 108, goodsImg: 'http://7xjyw1.com1.z0.glb.clouddn.com/pos001.jpg'},
+                    {goodsname: '海底捞', price: 108, goodsImg: 'http://7xjyw1.com1.z0.glb.clouddn.com/pos001.jpg'},
                 ]
             }
-        },
-        mounted:function(){
-            var orderHeight=document.body.clientHeight;
-            document.getElementById("order-list").style.height=orderHeight+'px';
-        },
+        }
+
     }
 </script>
 
@@ -159,5 +170,27 @@
     .goods-type {
         padding-left: 5px;
         clear: both;
+    }
+
+    .cookList li {
+        list-style: none;
+        width: 23%;
+        float: left;
+        padding: 2px;
+        margin: 2px;
+        border: 1px solid #E5E9F2;
+        /*overflow: hidden;*/
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    .cookList li span {
+
+        display: block;
+        float: left;
+    }
+
+    .foodImg {
+        width: 40%;
     }
 </style>
