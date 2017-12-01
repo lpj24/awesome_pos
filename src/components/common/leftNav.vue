@@ -31,10 +31,6 @@ export default {
         return {
 
         }
-    },
-    mounted: function () {
-        var orderHeight = document.body.clientHeight;
-        document.getElementsByClassName("left-nav").style.height = orderHeight + 'px';
     }
 }
 </script>

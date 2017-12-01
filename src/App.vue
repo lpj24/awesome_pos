@@ -31,9 +31,10 @@
 
 .main{
     float:left;
-    width:95%;
+    width:92%;
     background-color: #EFF2F7;
     height:100%;
+    margin-left: 2px;
     overflow: auto;
 }
 </style>
